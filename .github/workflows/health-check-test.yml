@@ -27,9 +27,6 @@ permissions: read-all
 
 jobs:
   run-health-check-tests:
-    defaults:
-      run:
-        working-directory: ./Application/
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
