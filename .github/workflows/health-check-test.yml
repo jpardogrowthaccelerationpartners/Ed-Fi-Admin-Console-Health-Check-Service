@@ -33,8 +33,10 @@ jobs:
         with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS-Docker
           ref: adminconsole1-rc.0
+
       - name: Run Admin API
         run: |
+          cd ..
           ls
 
       - name: Run Admin API
