@@ -1,0 +1,324 @@
+{
+	"info": {
+		"_postman_id": "615398c1-5596-46a0-b4be-5f45a66ce51e",
+		"name": "Admin API Setup 2.0 - Admin Console Instances",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "646458"
+	},
+	"item": [
+		{
+			"name": "adminConsole",
+			"item": [
+				{
+					"name": "instances",
+					"item": [
+						{
+							"name": "Instances",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"DELETE Applications: Status code is OK\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{API_URL}}/adminconsole/instances/1",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"adminconsole",
+										"instances",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Instances",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"let header = {\r",
+											"    \"Content-Type\": \"application/json\",\r",
+											"    \"Authorization\": `Bearer ${pm.collectionVariables.get(\"TOKEN\")}`\r",
+											"};\r",
+											"\r",
+											"if (pm.variables.get(\"isMultitenant\") == \"true\") {\r",
+											"    header['Tenant'] = `${pm.variables.get(\"tenant1\")}`;\r",
+											"}\r",
+											"\r",
+											"pm.sendRequest({\r",
+											"  url: `${pm.variables.get(\"API_URL\")}/v2/vendors`,\r",
+											"  method: 'POST',\r",
+											"  header: header,\r",
+											"  body: {\r",
+											"    mode: 'raw',\r",
+											"    raw:JSON.stringify({\r",
+											"      \"company\": \"Application Company\",\r",
+											"      \"namespacePrefixes\": \"uri://ed-fi.org\",\r",
+											"      \"contactName\": \"Application User\",\r",
+											"      \"contactEmailAddress\": \"application@example.com\"\r",
+											"    }), \r",
+											"  }\r",
+											"},  \r",
+											"function (err, response) {\r",
+											"  if(err) { console.log(\"Error in Pre-request:\", err); }\r",
+											"  const id = response.headers.get(\"Location\").split(\"/\")[2];\r",
+											"  if(id)\r",
+											"    {\r",
+											"        pm.collectionVariables.set(\"ApplicationVendorId\", id);\r",
+											"    }\r",
+											"});\r",
+											"\r",
+											"pm.sendRequest({\r",
+											"  url: `${pm.variables.get(\"API_URL\")}/v2/odsInstances?offset=${pm.variables.get(\"offset\")}&limit=${pm.variables.get(\"limit\")}`,\r",
+											"  method: 'GET',\r",
+											"  header: header\r",
+											"},  \r",
+											"function (err, response) {\r",
+											"  if(err) { console.log(\"Error in Pre-request:\", err); }\r",
+											"  const json = response.json();\r",
+											"  if(!json[0].id) { console.log('Error in Pre-request: odsInstancesID missing from response. Response is:', json); }\r",
+											"  else {\r",
+											"    pm.collectionVariables.set(\"ODSInstanceId\", json[0].id);\r",
+											"  }\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"POST Applications: Status code is Created\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"const PostApplicationSchema = {\r",
+											"  \"type\": \"object\",\r",
+											"  \"properties\": {\r",
+											"    \"docId\": {\r",
+											"      \"type\": \"integer\"\r",
+											"    },\r",
+											"    \"odsInstanceId\": {\r",
+											"      \"type\": \"integer\"\r",
+											"    },\r",
+											"    \"tenantId\": {\r",
+											"      \"type\": \"integer\"\r",
+											"    },\r",
+											"    \"edOrgId\": {\r",
+											"      \"type\": \"integer\"\r",
+											"    },\r",
+											"    \"document\": {\r",
+											"      \"type\": \"object\",\r",
+											"      \"properties\": {\r",
+											"        \"name\": {\r",
+											"          \"type\": \"string\"\r",
+											"        },\r",
+											"        \"instanceName\": {\r",
+											"          \"type\": \"string\"\r",
+											"        },\r",
+											"        \"clientId\": {\r",
+											"          \"type\": \"string\"\r",
+											"        },\r",
+											"        \"clientSecret\": {\r",
+											"          \"type\": \"string\"\r",
+											"        },\r",
+											"        \"baseUrl\": {\r",
+											"          \"type\": \"string\"\r",
+											"        },\r",
+											"        \"ResourcesUrl\": {\r",
+											"          \"type\": \"string\"\r",
+											"        },\r",
+											"        \"authenticationUrl\": {\r",
+											"          \"type\": \"string\"\r",
+											"        }\r",
+											"      },\r",
+											"      \"required\": [\r",
+											"        \"name\",\r",
+											"        \"instanceName\",\r",
+											"        \"clientId\",\r",
+											"        \"clientSecret\",\r",
+											"        \"baseUrl\",\r",
+											"        \"ResourcesUrl\",\r",
+											"        \"authenticationUrl\"\r",
+											"      ]\r",
+											"    }\r",
+											"  },\r",
+											"  \"required\": [\r",
+											"    \"docId\",\r",
+											"    \"odsInstanceId\",\r",
+											"    \"tenantId\",\r",
+											"    \"edOrgId\",\r",
+											"    \"document\"\r",
+											"  ]\r",
+											"}\r",
+											"\r",
+											"pm.test(\"POST Applications: Validation Schema Response\", () => {\r",
+											"    pm.response.to.have.jsonSchema(PostApplicationSchema);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "  {\r\n    \"docId\": 1,\r\n    \"odsInstanceId\": 1,\r\n    \"tenantId\": 1,\r\n    \"edOrgId\": 1,\r\n    \"document\": {\r\n      \"name\": \"default\",\r\n      \"instanceName\": \"instance 1\",\r\n      \"clientId\": \"edfi\",\r\n      \"clientSecret\": \"AzoAn4wrhnyJPGV/vsL4Zvj6AB2zEbmTMHuf37tpdxQ=\",\r\n      \"baseUrl\": \"https://host.docker.internal/api\",\r\n      \"ResourcesUrl\": \"/data/v3/ed-fi/\",\r\n      \"authenticationUrl\": \"/oauth/token/\"\r\n    }\r\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API_URL}}/adminconsole/instances",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"adminconsole",
+										"instances"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"let guid = 'edfi'",
+					"let client_secret = 'AzoAn4wrhnyJPGV/vsL4Zvj6AB2zEbmTMHuf37tpdxQ='",
+					"",
+					"let header = {",
+					"    'Content-Type': 'application/x-www-form-urlencoded'",
+					"};",
+					"",
+					"if (pm.variables.get(\"isMultitenant\") == \"true\") {",
+					"    header['Tenant'] = `${pm.variables.get(\"tenant1\")}`;",
+					"    pm.request.headers.upsert({key: 'Tenant', value: `${pm.variables.get(\"tenant1\")}` });",
+					"}",
+					"",
+					"pm.sendRequest({",
+					"    url: `${pm.variables.get(\"API_URL\")}/connect/register`,",
+					"    method: 'POST',",
+					"    header: header,",
+					"    body: {",
+					"        mode: 'urlencoded',",
+					"        urlencoded: [",
+					"            {key: 'ClientId', value: guid },",
+					"            {key: 'ClientSecret', value: client_secret },",
+					"            {key: 'DisplayName', value: guid }",
+					"        ]",
+					"    }",
+					"},",
+					"    (err, res) => {",
+					"        error = res.json().error",
+					"        if(error) {",
+					"            throw res.json().error_description",
+					"        }",
+					"",
+					"pm.sendRequest({",
+					"    url: `${pm.variables.get(\"API_URL\")}/connect/token`,",
+					"    method: 'POST',",
+					"    header: header,",
+					"    body: {",
+					"        mode: 'urlencoded',",
+					"        urlencoded: [",
+					"            {key: 'client_id', value: guid },",
+					"            {key: 'client_secret', value: client_secret },",
+					"            {key: 'grant_type', value: \"client_credentials\"},",
+					"            {key: 'scope', value: \"edfi_admin_api/full_access\"}",
+					"        ]",
+					"    }",
+					"},",
+					"    (err, res) => {",
+					"        error = res.json().error",
+					"        if(error) {",
+					"            throw res.json().error_description",
+					"        }",
+					"        pm.collectionVariables.set(\"TOKEN\", res.json().access_token)",
+					"});",
+					"});"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "TOKEN",
+			"value": ""
+		},
+		{
+			"key": "ODSInstanceId",
+			"value": ""
+		},
+		{
+			"key": "OtherApplicationVendorId",
+			"value": ""
+		},
+		{
+			"key": "OtherApplicationId",
+			"value": ""
+		},
+		{
+			"key": "ApplicationVendorId",
+			"value": ""
+		},
+		{
+			"key": "CreatedApplicationId",
+			"value": ""
+		}
+	]
+}
