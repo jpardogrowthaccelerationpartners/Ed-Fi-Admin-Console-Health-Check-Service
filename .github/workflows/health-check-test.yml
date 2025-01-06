@@ -38,14 +38,12 @@ jobs:
       - name: Run Admin API
         run: |
           ls
-          cd ..
-          ls
 
       - name: Run Admin API
         run: |
           docker compose \
-          --profile default -f ./Compose/pgsql/SingleTenant/compose-single-tenant-env.yml \
-          --env-file ./.env up -d
+          --profile default -f ./Ods-Docker/Compose/pgsql/SingleTenant/compose-single-tenant-env.yml \
+          --env-file ./Ods-Docker/.env up -d
 
       - name: Verify containers are running
         run: |
