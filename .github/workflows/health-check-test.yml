@@ -33,9 +33,11 @@ jobs:
         with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS-Docker
           ref: adminconsole1-rc.0
+          path: ./Ods-Docker
 
       - name: Run Admin API
         run: |
+          ls
           cd ..
           ls
 
