@@ -38,6 +38,12 @@ jobs:
       - name: Run Admin API
         run: |
           ls
+          cd Ods-Docker
+          
+      - name: Run Admin API
+        run: |
+          mv .env.example .env
+          ls
 
       - name: Run Admin API
         run: |
