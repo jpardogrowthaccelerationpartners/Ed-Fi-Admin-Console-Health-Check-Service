@@ -67,8 +67,8 @@ jobs:
 
       - name: Run tests
         run: |
-          newman run './E2E Tests/Admin API Setup 2.0 - Admin Console Instances.postman_collection.json' \
-            -e './E2E Tests/Admin API Docker-single-pgsql.postman_environment.json' \
+          newman run './Application/E2E Tests/Admin API Setup 2.0 - Admin Console Instances.postman_collection.json' \
+            -e './Application/E2E Tests/Admin API Docker-single-pgsql.postman_environment.json' \
             -r cli \
             -k
             
