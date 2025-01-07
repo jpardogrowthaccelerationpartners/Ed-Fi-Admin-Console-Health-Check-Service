@@ -28,9 +28,9 @@ jobs:
           ref: adminconsole1-rc.0
           path: ./Ods-Docker
 
-      - name: Run Admin API 1
-        run: |
-          cp -rf ./Ods-Docker/ssl ./ssl
+   #   - name: Run Admin API 1
+   #     run: |
+   #       cp -rf ./Ods-Docker/ssl ./ssl
           
       - name: Run Admin API 2
         run: |
