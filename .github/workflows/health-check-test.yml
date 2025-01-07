@@ -63,7 +63,7 @@ jobs:
           
       - name: Run Admin API 6
         run: |
-          ls ./Health/Application/E2E Tests
+          ls ./Health/Application/E2E Test
       
       - name: Setup node
         uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
@@ -75,8 +75,8 @@ jobs:
 
       - name: Run tests
         run: |
-          newman run 'Health/Application/E2E Tests/Admin API Setup 2.0 - Admin Console Instances.postman_collection.json' \
-            -e 'Health/Application/E2E Tests/Admin API Docker-single-pgsql.postman_environment.json' \
+          newman run 'Health/Application/E2E Test/Admin API Setup 2.0 - Admin Console Instances.postman_collection.json' \
+            -e 'Health/Application/E2E Test/Admin API Docker-single-pgsql.postman_environment.json' \
             -r cli \
             -k
             
