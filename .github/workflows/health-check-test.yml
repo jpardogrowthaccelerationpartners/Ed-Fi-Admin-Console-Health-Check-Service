@@ -35,17 +35,16 @@ jobs:
           ref: adminconsole1-rc.0
           path: ./Ods-Docker
 
-      - name: Run Admin API
+      - name: Run Admin API 1
         run: |
           ls
-          cd Ods-Docker
           
-      - name: Run Admin API
+      - name: Run Admin API 2
         run: |
-          mv .env.example .env
+          mv ./Ods-Docker/.env.example ./Ods-Docker/.env
           ls
 
-      - name: Run Admin API
+      - name: Run Admin API 3
         run: |
           docker compose \
           --profile default -f ./Ods-Docker/Compose/pgsql/SingleTenant/compose-single-tenant-env.yml \
