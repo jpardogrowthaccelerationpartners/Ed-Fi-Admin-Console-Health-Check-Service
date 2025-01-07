@@ -67,14 +67,14 @@ jobs:
 
       - name: Run tests
         run: |
-          newman run './Application/E2E Tests/Admin API Setup 2.0 - Admin Console Instances.postman_collection.json' \
-            -e './Application/E2E Tests/Admin API Docker-single-pgsql.postman_environment.json' \
+          newman run './Health/Application/E2E Tests/Admin API Setup 2.0 - Admin Console Instances.postman_collection.json' \
+            -e './Health/Application/E2E Tests/Admin API Docker-single-pgsql.postman_environment.json' \
             -r cli \
             -k
             
       - name: Build Admin Console Health Check Service
         run: |
-          docker build -f ./Docker/Dockerfile -t edfi.adminconsole.healthcheckservice .
+          docker build -f ./Health/Docker/Dockerfile -t edfi.adminconsole.healthcheckservice .
 
       - name: Run Docker Health Check
         run: |
