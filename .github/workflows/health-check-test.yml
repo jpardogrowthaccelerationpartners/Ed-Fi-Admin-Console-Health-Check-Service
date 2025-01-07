@@ -63,7 +63,7 @@ jobs:
           
       - name: Run Admin API 6
         run: |
-          docker ps -a
+          docker logs -f ed-fi-gateway
       
       - name: Setup node
         uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
@@ -112,6 +112,6 @@ jobs:
         if: success() || failure()
         with:
           name: test-html-results
-          path: Application/EdFi.Ods.AdminApi/report-html/results.html
+          path: Health/Application/E2E Test/report-html/results.html
           retention-days: 5
 
