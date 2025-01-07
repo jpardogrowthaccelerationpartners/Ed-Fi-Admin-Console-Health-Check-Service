@@ -52,6 +52,10 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           path: ./Health
+
+      - name: Run Admin API 5
+        run: |
+          ls
       
       - name: Setup node
         uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
@@ -63,14 +67,14 @@ jobs:
 
       - name: Run tests
         run: |
-          newman run './Health/E2E Tests/Admin API Setup 2.0 - Admin Console Instances.postman_collection.json' \
-            -e './Health/E2E Tests/Admin API Docker-single-pgsql.postman_environment.json' \
+          newman run './E2E Tests/Admin API Setup 2.0 - Admin Console Instances.postman_collection.json' \
+            -e './E2E Tests/Admin API Docker-single-pgsql.postman_environment.json' \
             -r cli \
             -k
             
       - name: Build Admin Console Health Check Service
         run: |
-          docker build -f ./Health/Docker/Dockerfile -t edfi.adminconsole.healthcheckservice .
+          docker build -f ./Docker/Dockerfile -t edfi.adminconsole.healthcheckservice .
 
       - name: Run Docker Health Check
         run: |
