@@ -78,7 +78,7 @@ jobs:
           newman run 'Health/Application/E2E Test/Admin API Setup 2.0 - Admin Console Instances.postman_collection.json' \
             -e 'Health/Application/E2E Test/Admin API Docker-single-pgsql.postman_environment.json' \
             -r cli \
-            -k
+            --insecure
             
       - name: Build Admin Console Health Check Service
         run: |
