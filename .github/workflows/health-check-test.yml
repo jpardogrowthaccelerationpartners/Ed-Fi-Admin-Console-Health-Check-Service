@@ -59,7 +59,11 @@ jobs:
           
       - name: Run Admin API 5
         run: |
-          ls ./Health
+          ls ./Health/Application
+          
+      - name: Run Admin API 6
+        run: |
+          ls ./Health/Application/E2E Tests
       
       - name: Setup node
         uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
